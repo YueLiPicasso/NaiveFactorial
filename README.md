@@ -1,4 +1,4 @@
-[中文说明](#cn-title)
+[中文说明](#大整数阶乘程序说明书)
 # Naive Factorial
 
 Naive x86_64 assembly for generating binary factorial tables
@@ -49,7 +49,7 @@ The binary to decimal conversion logic are removed from the factorial-table-gene
 
 
 
-# 大整数阶乘程序说明书 {#cntitle}
+# 大整数阶乘程序说明书
 
 
 
