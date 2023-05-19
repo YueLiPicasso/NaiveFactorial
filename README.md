@@ -40,7 +40,11 @@ There are five independent buffers named I, II, III, IV and V. They act as regis
 - Buffers I, II and III are individually referred to as a "MULTIPLY long buffer".
 - Buffer IV is referred to simply as "long buffer", and buffer V as "small buffer".
 
-The factorial algorithm is non-recursive. The order of computation is like （（（（5）\*4）\*3）\*2）\*1 rather than 5\*（4\*（3\*（2\*（1））））.
+The factorial algorithm is non-recursive. The order of computation is like 
+```
+((((5)*4)*3)*2)*1 
+```
+rather than `5*(4*(3*(2*(1))))`.
 
 ## Binary to Decimal Conversion
 
