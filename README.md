@@ -47,9 +47,9 @@ The factorial algorithm is non-recursive. The order of computation is like （�
 The binary to decimal conversion logic are removed from the factorial-table-generation logic due
  to its low performance. However， they can still be found, together with other test codes, in [recycle.asm](./recycle.asm).
 
-****************
 
-# 大整数阶乘程序说明书 {#cn-title}
+
+# 大整数阶乘程序说明书 {#cntitle}
 
 
 
