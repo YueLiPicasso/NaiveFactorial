@@ -47,12 +47,13 @@ The factorial algorithm is non-recursive. The order of computation is like （�
 The binary to decimal conversion logic are removed from the factorial-table-generation logic due
  to its low performance. However， they can still be found, together with other test codes, in [recycle.asm](./recycle.asm).
 
-#大整数阶乘程序说明书 {#cn-title}
-
-
 ****************
+
+# 大整数阶乘程序说明书 {#cn-title}
+
+
+
 ##     简介      
-****************
 
 看似很小的整数，比如512，它的阶乘有三千多位（二进制）数，单一寄存器无法存储，
 也无法直接使用x86_64CPU的内置乘法器计算。为了计算尽可能大的整数阶乘，现将
@@ -74,17 +75,16 @@ addr+2: 0x00
 减法（long_sub），用减法和增一函数定义了除法（long_div），最终定义了二进制转
 换十进制的函数（rep_div）。
 
-****************
+
 ##    优缺点     
-****************
 
 优点：阶乘算法速度较快（至少500以内数字阶乘没有明显等待）。制作一张0至520的*二进制*阶乘表大概耗时10分钟。
 缺点：字符串二进制数转字符串十进制,从14的阶乘开始，速度非常缓慢，要20-30分钟甚至更长
      时间才能完成。15的阶乘结果的十进制转换干脆就因时间太长被操作系统掐了。因此无法制作最大基数超过14的十进制阶乘表。
 
-****************
+
 ##   上手测试    
-****************
+
 
 生成一个1到10的阶乘表
 
@@ -99,9 +99,9 @@ addr+2: 0x00
 $ make
 $ ./test > factbl.html
 ```
-****************
+
 ##   程序模型    
-****************
+
 
 有五个相互独立缓冲区（buffer）, 依次标号为I，II, III, IV, V。
 这些缓冲区扮演大整数寄存器的功能,就像`rax`和`rbx`之于64位整数一样。
@@ -116,9 +116,9 @@ $ ./test > factbl.html
 本程序的阶乘计算没有采用递归，所以计算顺序不是， 比如5\*（4\*（3\*（2\*（1）））），
 而是（（（（5）\*4）\*3）\*2）\*1。这种算法不构成瓶颈，进制转化才是瓶颈。
 
-****************
+
 ## 十进制转化
-****************
+
 
 由于效率低下，相关代码已被移入回收站[recycle.asm](./recycle.asm).
 
