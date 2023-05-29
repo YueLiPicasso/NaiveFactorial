@@ -66,7 +66,107 @@ _start:
 	push r8			; I         [rsp+16]
 	push r9			; II        [rsp+8]
 	push r10		; III       [rsp]
+	
+	jmp .bin_fac_table	; comment this line to generate a decimal factorial table
 
+	.dec_fac_table:
+	mov eax, [tblc]		; load table counter
+	test eax, eax		; if counter = 0 then quit
+	jz .quit		; else dec counter, 
+	dec eax
+	mov [tblc], eax
+	
+	mov rdi, num_X		; num_X is dividend
+	mov rsi, [rsp+16]
+	mov rdx, ARITH_BUFFER_SIZE
+	call string_copy	; copy dividend to buffer I
+
+	mov rdi, num_10		; num_10 is the divisor
+	mov rsi, [rsp+8]
+	mov rdx, ARITH_BUFFER_SIZE
+	call string_copy	; copy divisor to buffer II
+	
+	mov rdi, [rsp+16]	; I   - dividend
+	mov rsi, [rsp+8]	; II  - divisor
+	mov rdx, [rsp]		; III - quotient
+	mov rcx, [rsp+32]	; IV  - remainder
+	mov r8, num_10		; read-only divisor - num_10
+	call rep_div
+	test rax, rax
+	jz .quit		; else rep_div result is in buffer I
+
+	push rax
+	mov rdi, bpar
+	call print_string	; print <p>
+	pop rax
+	
+	mov rdi, rax		; reverse-copy the decimal to buffer II
+	mov rsi, [rsp+8] 	; II
+	mov rdx, ARITH_BUFFER_SIZE
+	call string_rev		; cannot fail
+	mov rdi, rax
+	call print_string	; print the decimal of num_X in ordinary order
+	
+	mov rdi, 0x21		; print !
+	call print_char
+	mov rdi, 0x20
+	call print_char		; print space
+	mov rdi, 0x3D		; print =
+	call print_char
+	mov rdi, epar
+	call print_string	; print </p>
+	call print_newline	; newline
+
+	;; call factorial
+	
+	mov rdi, num_X
+	mov rsi, [rsp+24]
+	mov rdx, SMALL_BUFFER_SIZE
+	mov rcx, [rsp+32]
+	mov r8,  ARITH_BUFFER_SIZE
+	call factorial
+
+	test rax, rax		
+	jz .fac_fail
+
+	mov rdi, bpar
+	call print_string	; print <p>
+
+	;; convert result to decimal
+	mov rdi, num_10		; load divisor buffer (III)
+	mov rsi, [rsp]
+	mov rdx, ARITH_BUFFER_SIZE
+	call string_copy	
+
+	mov rdi, [rsp+32] 	; IV: factorial long buffer = dividend buffer
+	mov rsi, [rsp]		; III
+	mov rdx, [rsp+8]	; II
+	mov rcx, [rsp+16]	; I
+	mov r8, num_10
+	call rep_div
+	test rax, rax
+	jz .quit
+	mov rdi, rax		; reverse string
+	mov rsi, [rsp+16]	; reverse to buffer I
+	mov rdx,  ARITH_BUFFER_SIZE
+	call string_rev
+	test rax, rax
+	jz .quit
+	mov rdi, rax		; print the decimal result in ordinary left-to-right order
+	call print_string
+	
+	mov rdi, epar
+	call print_string	; print </p>
+	call print_newline
+
+	mov rdi, num_X		; increment num_X
+	mov rsi, FAC_BASE_SIZE
+	call num_inc
+	
+	jmp .dec_fac_table
+
+
+	
 	;; generate binary factorial table
 	.bin_fac_table:
 	
